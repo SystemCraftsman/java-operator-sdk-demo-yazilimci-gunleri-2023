@@ -24,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 
 @QuarkusTest
-@QuarkusTestResource(K3sResource.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class OperatorFunctionalTest {
