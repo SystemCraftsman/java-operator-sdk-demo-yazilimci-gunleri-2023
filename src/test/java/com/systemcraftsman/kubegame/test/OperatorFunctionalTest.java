@@ -75,11 +75,11 @@ public class OperatorFunctionalTest {
     @Order(2)
     void testWorld() throws InterruptedException, SQLException {
         client.resources(World.class).inNamespace(NAMESPACE)
-                .load(getClass().getResource("/examples/archaide.yaml").getFile()).create();
+                .load(Objects.requireNonNull(getClass().getResource("/examples/archaide.yaml")).getFile()).create();
         client.resources(World.class).inNamespace(NAMESPACE)
-                .load(getClass().getResource("/examples/incipio.yaml").getFile()).create();
+                .load(Objects.requireNonNull(getClass().getResource("/examples/incipio.yaml")).getFile()).create();
         client.resources(World.class).inNamespace(NAMESPACE)
-                .load(getClass().getResource("/examples/chthonia.yaml").getFile()).create();
+                .load(Objects.requireNonNull(getClass().getResource("/examples/chthonia.yaml")).getFile()).create();
 
         World worldArchaide = worldService.getWorld("archaide", NAMESPACE);
         World worldIncipio = worldService.getWorld("incipio", NAMESPACE);
