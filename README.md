@@ -4,7 +4,7 @@ Demo for the Developing Kubernetes Operators with Java Operator SDK talk in Java
 
 ## Architecture
 
-![]()
+![Architecture](https://user-images.githubusercontent.com/10568159/236544627-afd5a1e1-a12e-420a-9980-028f53d8055e.png)
 
 ## Steps:
 
