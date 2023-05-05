@@ -12,10 +12,10 @@ import javax.inject.Inject;
 public class WorldService {
 
     @Inject
-    private GameService gameService;
+    GameService gameService;
 
     @Inject
-    private PostgresService postgresService;
+    PostgresService postgresService;
 
     @Inject
     KubernetesClient client;
