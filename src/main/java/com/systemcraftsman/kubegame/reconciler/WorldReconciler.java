@@ -16,9 +16,6 @@ import java.time.Duration;
 public class WorldReconciler implements Reconciler<World> {
 
     @Inject
-    KubernetesClient client;
-
-    @Inject
     WorldService worldService;
 
     @Inject
@@ -27,12 +24,6 @@ public class WorldReconciler implements Reconciler<World> {
     @Override
     public UpdateControl<World> reconcile(World resource, Context<World> context) {
         Game game = gameService.getGame(resource.getSpec().getGame(), resource.getMetadata().getNamespace());
-
-        client.resources(Game.class)
-                .inNamespace(resource.getMetadata().getNamespace())
-                .withName(resource.getSpec().getGame())
-                .get();
-
 
         if (game != null && game.getStatus().isReady()) {
 
