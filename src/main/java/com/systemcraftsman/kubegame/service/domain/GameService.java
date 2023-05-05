@@ -11,6 +11,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @ApplicationScoped
 public class GameService {
@@ -118,7 +119,7 @@ public class GameService {
         service.addOwnerReference(game);
         client.services().resource(service).create();
 
-        if(service != null && ProfileManager.getActiveProfile() != "prod") {
+        if(service != null && !Objects.equals(ProfileManager.getActiveProfile(), "prod")) {
             client.services().resource(service).portForward(POSTGRES_DB_PORT, POSTGRES_DB_PORT);
         }
 
@@ -126,7 +127,7 @@ public class GameService {
     }
 
     public String getPostgresServiceName(Game game){
-        if(ProfileManager.getActiveProfile() != "prod") {
+        if(!Objects.equals(ProfileManager.getActiveProfile(), "prod")) {
             return "localhost";
         }
         return game.getMetadata().getName() + POSTGRES_SUFFIX;
