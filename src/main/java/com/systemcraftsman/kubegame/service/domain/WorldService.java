@@ -1,17 +1,12 @@
-package com.systemcraftsman.kubegame.service;
+package com.systemcraftsman.kubegame.service.domain;
 
 import com.systemcraftsman.kubegame.customresource.Game;
 import com.systemcraftsman.kubegame.customresource.World;
-import io.fabric8.kubernetes.api.model.apps.Deployment;
+import com.systemcraftsman.kubegame.service.PostgresService;
 import io.fabric8.kubernetes.client.KubernetesClient;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @ApplicationScoped
 public class WorldService {

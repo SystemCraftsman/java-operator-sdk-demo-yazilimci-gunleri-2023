@@ -2,22 +2,16 @@ package com.systemcraftsman.kubegame.reconciler;
 
 import com.systemcraftsman.kubegame.customresource.Game;
 import com.systemcraftsman.kubegame.customresource.World;
-import com.systemcraftsman.kubegame.service.GameService;
-import com.systemcraftsman.kubegame.service.WorldService;
+import com.systemcraftsman.kubegame.service.domain.GameService;
+import com.systemcraftsman.kubegame.service.domain.WorldService;
 import com.systemcraftsman.kubegame.status.WorldStatus;
-import io.fabric8.kubernetes.api.model.DeletionPropagation;
-import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.javaoperatorsdk.operator.api.reconciler.Context;
-import io.javaoperatorsdk.operator.api.reconciler.ControllerConfiguration;
 import io.javaoperatorsdk.operator.api.reconciler.Reconciler;
 import io.javaoperatorsdk.operator.api.reconciler.UpdateControl;
-import io.javaoperatorsdk.operator.api.reconciler.dependent.Dependent;
 
 import javax.inject.Inject;
 import java.time.Duration;
-
-import static io.javaoperatorsdk.operator.api.reconciler.Constants.WATCH_CURRENT_NAMESPACE;
 
 public class WorldReconciler implements Reconciler<World> {
 
@@ -25,10 +19,10 @@ public class WorldReconciler implements Reconciler<World> {
     KubernetesClient client;
 
     @Inject
-    private WorldService worldService;
+    WorldService worldService;
 
     @Inject
-    private GameService gameService;
+    GameService gameService;
 
     @Override
     public UpdateControl<World> reconcile(World resource, Context<World> context) {

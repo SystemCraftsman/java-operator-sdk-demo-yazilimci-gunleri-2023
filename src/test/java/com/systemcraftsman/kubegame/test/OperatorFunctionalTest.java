@@ -2,23 +2,19 @@ package com.systemcraftsman.kubegame.test;
 
 import com.systemcraftsman.kubegame.customresource.Game;
 import com.systemcraftsman.kubegame.customresource.World;
-import com.systemcraftsman.kubegame.service.GameService;
 import com.systemcraftsman.kubegame.service.PostgresService;
-import com.systemcraftsman.kubegame.service.WorldService;
+import com.systemcraftsman.kubegame.service.domain.GameService;
+import com.systemcraftsman.kubegame.service.domain.WorldService;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.javaoperatorsdk.operator.Operator;
-import io.quarkus.runtime.configuration.ProfileManager;
-import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
-import org.apache.commons.lang3.ThreadUtils;
-import org.junit.Assert;
 import org.junit.jupiter.api.*;
 
 import javax.inject.Inject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
@@ -37,13 +33,13 @@ public class OperatorFunctionalTest {
     KubernetesClient client;
 
     @Inject
-    private GameService gameService;
+    GameService gameService;
 
     @Inject
-    private WorldService worldService;
+    WorldService worldService;
 
     @Inject
-    private PostgresService postgresService;
+    PostgresService postgresService;
 
     @BeforeAll
     void startOperator() {
@@ -59,18 +55,18 @@ public class OperatorFunctionalTest {
     @Order(1)
     void testGame() throws InterruptedException {
         client.resources(Game.class).inNamespace(NAMESPACE)
-                .load(getClass().getResource("/examples/oasis.yaml").getFile()).create();
+                .load(Objects.requireNonNull(getClass().getResource("/examples/oasis.yaml")).getFile()).create();
 
         Game game = gameService.getGame("oasis", NAMESPACE);
 
-        Assert.assertNotNull(game);
+        Assertions.assertNotNull(game);
 
         await().atMost(60, TimeUnit.SECONDS).untilAsserted(() -> {
             Deployment postgresDeployment = gameService.getPostgresDeployment(game);
-            Assert.assertNotNull(postgresDeployment);
-            Assert.assertEquals(Integer.valueOf(1), postgresDeployment.getStatus().getReadyReplicas());
+            Assertions.assertNotNull(postgresDeployment);
+            Assertions.assertEquals(Integer.valueOf(1), postgresDeployment.getStatus().getReadyReplicas());
 
-            Assert.assertTrue(gameService.getGame(game.getMetadata().getName(), NAMESPACE).getStatus().isReady());
+            Assertions.assertTrue(gameService.getGame(game.getMetadata().getName(), NAMESPACE).getStatus().isReady());
         });
 
     }
@@ -89,14 +85,14 @@ public class OperatorFunctionalTest {
         World worldIncipio = worldService.getWorld("incipio", NAMESPACE);
         World worldChthonia = worldService.getWorld("chthonia", NAMESPACE);
 
-        Assert.assertNotNull(worldArchaide);
-        Assert.assertNotNull(worldIncipio);
-        Assert.assertNotNull(worldChthonia);
+        Assertions.assertNotNull(worldArchaide);
+        Assertions.assertNotNull(worldIncipio);
+        Assertions.assertNotNull(worldChthonia);
 
         await().atMost(60, TimeUnit.SECONDS).untilAsserted(() -> {
-            Assert.assertTrue(worldService.getWorld(worldArchaide.getMetadata().getName(), NAMESPACE).getStatus().isReady());
-            Assert.assertTrue(worldService.getWorld(worldIncipio.getMetadata().getName(), NAMESPACE).getStatus().isReady());
-            Assert.assertTrue(worldService.getWorld(worldChthonia.getMetadata().getName(), NAMESPACE).getStatus().isReady());
+            Assertions.assertTrue(worldService.getWorld(worldArchaide.getMetadata().getName(), NAMESPACE).getStatus().isReady());
+            Assertions.assertTrue(worldService.getWorld(worldIncipio.getMetadata().getName(), NAMESPACE).getStatus().isReady());
+            Assertions.assertTrue(worldService.getWorld(worldChthonia.getMetadata().getName(), NAMESPACE).getStatus().isReady());
         });
 
         Game game = gameService.getGame(worldArchaide.getSpec().getGame(), worldArchaide.getMetadata().getNamespace());
@@ -106,10 +102,10 @@ public class OperatorFunctionalTest {
                 game.getMetadata().getName());
 
         int resultCount = 0;
-        while(resultSet.next()){
+        while (resultSet.next()) {
             resultCount++;
         }
-        Assert.assertEquals(3, resultCount);
+        Assertions.assertEquals(3, resultCount);
 
     }
 
@@ -117,25 +113,25 @@ public class OperatorFunctionalTest {
     @Order(3)
     void testDeletion() throws InterruptedException, SQLException {
         client.resources(World.class).inNamespace(NAMESPACE)
-                .load(getClass().getResource("/examples/archaide.yaml").getFile()).delete();
+                .load(Objects.requireNonNull(getClass().getResource("/examples/archaide.yaml")).getFile()).delete();
         client.resources(World.class).inNamespace(NAMESPACE)
-                .load(getClass().getResource("/examples/incipio.yaml").getFile()).delete();
+                .load(Objects.requireNonNull(getClass().getResource("/examples/incipio.yaml")).getFile()).delete();
         client.resources(World.class).inNamespace(NAMESPACE)
-                .load(getClass().getResource("/examples/chthonia.yaml").getFile()).delete();
+                .load(Objects.requireNonNull(getClass().getResource("/examples/chthonia.yaml")).getFile()).delete();
 
         await().atMost(60, TimeUnit.SECONDS).untilAsserted(() -> {
-            Assert.assertNull(worldService.getWorld("archaide", NAMESPACE));
-            Assert.assertNull(worldService.getWorld("incipio", NAMESPACE));
-            Assert.assertNull(worldService.getWorld("chthonia", NAMESPACE));
+            Assertions.assertNull(worldService.getWorld("archaide", NAMESPACE));
+            Assertions.assertNull(worldService.getWorld("incipio", NAMESPACE));
+            Assertions.assertNull(worldService.getWorld("chthonia", NAMESPACE));
         });
 
         client.resources(Game.class).inNamespace(NAMESPACE)
-                .load(getClass().getResource("/examples/oasis.yaml").getFile()).delete();
+                .load(Objects.requireNonNull(getClass().getResource("/examples/oasis.yaml")).getFile()).delete();
 
         await().atMost(60, TimeUnit.SECONDS).untilAsserted(() -> {
-            Assert.assertNull(gameService.getGame("oasis", NAMESPACE));
-            Assert.assertNull(client.apps().deployments().inNamespace(NAMESPACE).withName("oasis-postgres").get());
-            Assert.assertNull(client.services().inNamespace(NAMESPACE).withName("oasis-postgres").get());
+            Assertions.assertNull(gameService.getGame("oasis", NAMESPACE));
+            Assertions.assertNull(client.apps().deployments().inNamespace(NAMESPACE).withName("oasis-postgres").get());
+            Assertions.assertNull(client.services().inNamespace(NAMESPACE).withName("oasis-postgres").get());
         });
     }
 

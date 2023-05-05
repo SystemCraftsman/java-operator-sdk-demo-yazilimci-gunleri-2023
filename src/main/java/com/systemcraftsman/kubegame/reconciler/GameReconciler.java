@@ -1,25 +1,22 @@
 package com.systemcraftsman.kubegame.reconciler;
 
 import com.systemcraftsman.kubegame.customresource.Game;
-import com.systemcraftsman.kubegame.service.GameService;
+import com.systemcraftsman.kubegame.service.domain.GameService;
 import com.systemcraftsman.kubegame.status.GameStatus;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.javaoperatorsdk.operator.api.reconciler.Context;
 import io.javaoperatorsdk.operator.api.reconciler.Reconciler;
 import io.javaoperatorsdk.operator.api.reconciler.UpdateControl;
 
 import javax.inject.Inject;
 import java.time.Duration;
+import java.util.Objects;
 
 public class GameReconciler implements Reconciler<Game> {
 
     @Inject
-    KubernetesClient client;
-
-    @Inject
-    private GameService gameService;
+    GameService gameService;
 
     @Override
     public UpdateControl<Game> reconcile(Game resource, Context context) {
@@ -36,7 +33,7 @@ public class GameReconciler implements Reconciler<Game> {
         }
 
         if(postgresDeployment.getStatus() != null &&
-                postgresDeployment.getStatus().getReadyReplicas() == postgresDeployment.getStatus().getReplicas()){
+                Objects.equals(postgresDeployment.getStatus().getReadyReplicas(), postgresDeployment.getStatus().getReplicas())){
             GameStatus status = resource.getStatus();
             status.setReady(true);
             status.setMsg("All dependencies are ready");

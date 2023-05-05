@@ -1,11 +1,10 @@
-package com.systemcraftsman.kubegame.service;
+package com.systemcraftsman.kubegame.service.domain;
 
 import com.systemcraftsman.kubegame.customresource.Game;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.quarkus.runtime.configuration.ProfileManager;
 
 import javax.enterprise.context.ApplicationScoped;
