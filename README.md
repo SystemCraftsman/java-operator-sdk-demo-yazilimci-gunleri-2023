@@ -10,6 +10,7 @@ Demo for the Developing Kubernetes Operators with Java Operator SDK talk in Java
 
 * Examine the application.properties
 * Examine the target/kubernetes
+* Examine the custom resources and their specs
 * Examine the reconcilers
 * Examine the services
 
@@ -54,7 +55,7 @@ psql -U postgres
 ```
 
 ```shell
-k apply -f examples/readyPlayerOne/
+k apply -f examples/readyPlayerOne/incipio.yaml
 ```
 
 ```postgresql
@@ -66,6 +67,19 @@ select * from world;
 ```
 
 ```shell
+k apply -f examples/readyPlayerOne/
+```
+
+```postgresql
+select * from world;
+```
+
+```shell
 k delete games oasis
 ```
+
+## Running the test
+
+* Examine the `OperatorFunctionalTest`
+* Run the test
 
