@@ -1,6 +1,6 @@
 # Java Operator SDK Demo for Yazilimci Gunleri 2023
 
-Demo for the Developing Kubernetes Operators with Java Operator SDK talk in JavaDay Istanbul 2023
+Demo for the Developing Kubernetes Operators with Java Operator SDK talk in Yazilimci Gunleri 2023
 
 ## Architecture
 
