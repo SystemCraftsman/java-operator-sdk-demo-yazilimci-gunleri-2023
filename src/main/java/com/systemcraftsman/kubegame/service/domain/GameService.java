@@ -119,15 +119,15 @@ public class GameService {
         service.addOwnerReference(game);
         client.services().resource(service).create();
 
-        if(service != null && !Objects.equals(ProfileManager.getActiveProfile(), "prod")) {
+        if (service != null && !Objects.equals(ProfileManager.getActiveProfile(), "prod")) {
             client.services().resource(service).portForward(POSTGRES_DB_PORT, POSTGRES_DB_PORT);
         }
 
         return service;
     }
 
-    public String getPostgresServiceName(Game game){
-        if(!Objects.equals(ProfileManager.getActiveProfile(), "prod")) {
+    public String getPostgresServiceName(Game game) {
+        if (!Objects.equals(ProfileManager.getActiveProfile(), "prod")) {
             return "localhost";
         }
         return game.getMetadata().getName() + POSTGRES_SUFFIX;

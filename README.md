@@ -70,6 +70,10 @@ select * from world;
 k apply -f examples/readyPlayerOne/
 ```
 
+```shell
+k get worlds
+```
+
 ```postgresql
 select * from world;
 ```
